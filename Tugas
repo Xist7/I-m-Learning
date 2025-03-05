@@ -1,0 +1,15 @@
+#include <iostream>
+using namespace std;
+int main (){
+int data[5]={78, 90, 80, 85, 79};
+int n,op;
+cout << "===Pilih Opsi==="
+cout << "1. Input Data ";
+cout << "2. Hapus Data";
+cout << "3. Detail Data";
+switch (op){
+case 1: 
+for
+
+  }
+}
