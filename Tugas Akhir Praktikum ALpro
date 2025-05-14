@@ -1,0 +1,216 @@
+#include <iostream>//library
+#include <string>
+#include <limits>
+using namespace std;
+
+struct character{ //bagian strucrt
+    int hp, atk; //variabel struct
+    string nama;
+    string weapon;
+};
+
+int searchname(character arr[], int n, string target){//bagian mencari menurut nama menggunakan binary srarch
+    int left = 0;
+    int right = n-1;
+    while (left <= right) {
+        int mid = left + (right - left) / 2;
+        if (arr[mid].nama == target) {
+            return mid;
+        } else if (arr[mid].nama < target ) {
+            left = mid + 1;
+        } else {
+            right = mid - 1;
+        } 
+    }
+    return -1;
+}
+
+int searchweapon(character arr[], int n, string target){//bagian mencari menurut nama menggunakan binary srarch
+    int left = 0;
+    int right = n-1;
+    while (left <= right) {
+        int mid = left + (right - left) / 2;
+        if (arr[mid].weapon == target) {
+            return mid;
+        } else if (arr[mid].weapon < target ) {
+            left = mid + 1;
+        } else {
+            right = mid - 1;
+        } 
+    }
+    return -1;
+}
+
+void sortname(character arr[], int n){ //bagian sorting semua menurut nama 
+     for (int i = 0; i < n - 1; i++) {
+        int tukar = 0; //  integer sebagai penanda pertukaran
+        for (int j = 0; j < n - 1 - i; j++) {
+            if (arr[j].nama > arr[j + 1].nama) {
+                // Pertukaran elemen
+                string temp_nama = arr[j].nama;//nama
+                arr[j].nama = arr[j + 1].nama;
+                arr[j + 1].nama = temp_nama;
+
+                string temp_weapon = arr[j].weapon;//weapon
+                arr[j].weapon = arr[j + 1].weapon;
+                arr[j + 1].weapon = temp_weapon;
+
+                int temp_hp = arr[j].hp;//hp
+                arr[j].hp = arr[j + 1].hp;
+                arr[j + 1].hp = temp_hp;
+
+                int temp_atk = arr[j].atk;//hp
+                arr[j].atk = arr[j + 1].atk;
+                arr[j + 1].atk = temp_atk;
+                tukar = 1; // Tandai bahwa ada pertukaran
+            }
+        }
+        if (tukar == 0) // Jika tidak ada pertukaran, hentikan
+            break;
+    }
+}
+void sortweapon(character arr[], int n){ //bagian sorting semua data menurut jenis senjata
+     for (int i = 0; i < n - 1; i++) {
+        int tukar = 0; //  integer sebagai penanda pertukaran
+        for (int j = 0; j < n - 1 - i; j++) {
+            if (arr[j].weapon > arr[j + 1].weapon) {
+                // Pertukaran elemen
+                character temp = arr[j];//kode yang lebih sederhana dibanding sortname
+                arr[j] = arr[j + 1];
+                arr[j + 1] = temp;
+                tukar = 1; // Tandai bahwa ada pertukaran
+            }
+        }
+        if (tukar == 0) // Jika tidak ada pertukaran, hentikan
+            break;
+    }
+}
+
+int main (){
+    bool find;
+    int n,opsi,hasil,hp,atk;//variabel2 yang dibutuhkan
+    string nama, senjata,konfirmasi;
+    cout << "Masukan jumlah karakter: "; cin >> n; //input jumlah karakter
+    character kar[n];
+    for(int i=0;i<n;i++){//input detail karakter
+        cout << "Masukan nama karakter ke-"<< i+1<< ": ";
+        cin.ignore();
+        getline(cin, kar[i].nama);
+        cout << "Masukan jumlah hp "<<kar[i].nama<< ": ";
+        cin >> kar[i].hp;
+        cout << "Masukan senjata yang digunakan oleh "<<kar[i].nama<< ": ";
+        cin.ignore();
+        getline(cin, kar[i].weapon);
+        cout << "Masukan jumlah attack "<<kar[i].nama<< ": ";
+        cin >> kar[i].atk;
+    }
+    do{//perulangan untuk terus mencari data yang sudah ada
+        cout << "Pilih Opsi Mencari Karakter Menurut\n";//Bagian detail yang ingin dicari
+        cout << "1. Nama\n";
+        cout << "2. hp\n";
+        cout << "3. weapon\n";
+        cout << "4. atk\n";
+        cout << "5. Tampilkan Data\n";
+        cin >> opsi; //input opsi
+        switch(opsi){
+            case 1://jika memilih mecari menurut nama
+            cout << "Input nama karakter yang ingin dicari: ";
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');//agar dapat menggunakan spasi pada input
+            getline(cin, nama);
+            sortname(kar, n);//memanggil subprogram sorting dan pencarian menurut nama
+            hasil=searchname(kar, n, nama);
+            if (hasil==-1){
+                cout << "Data tidak ditemukan\n";
+            } else{
+                cout << "======================================\n";
+                cout << "Ditemukan hasil\n";
+                cout << "Nama: "<<kar[hasil].nama << endl;
+                cout << "HP: " << kar[hasil].hp << endl;
+                cout << "Senjata: " << kar[hasil].weapon << endl;
+                cout << "ATK: " <<kar[hasil].atk << endl;
+                cout << "======================================\n";
+            }
+            break;
+
+            case 2://jika memilih mencari menurut jumlah hp
+            find=false;//untuk pengecekan data ditemukan atau tidak
+            cout << "Input jumlah HP yang ingin dicari: ";
+            cin >> hp;
+            for (int i=0;i<n;i++){//Linier search
+                
+                if(kar[i].hp==hp){//menampilkan semua karakter yang memiliki jumlah hp yang dicari
+                    cout << "======================================\n";
+                    cout << "Ditemukan hasil:\n";
+                    cout << "Nama: "<<kar[i].nama << endl;
+                    cout << "HP: " << kar[i].hp << endl;
+                    cout << "Senjata: " << kar[i].weapon << endl;
+                    cout << "ATK: " <<kar[i].atk << endl;
+                    cout << "======================================\n";
+                    find=true;
+                }
+            }
+            if(!find){
+                cout<< "Data Tidak Ditemukan\n";
+            }
+            break;
+
+            case 3://jika memilih mencari menurut jenis sejata
+            cout << "Input Senjata yang ingin dicari ";
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            getline(cin, senjata);
+            sortweapon(kar, n);
+            hasil=searchweapon(kar, n, senjata);
+            if (hasil==-1){
+                cout << "Data tidak ditemukan\n";
+            } else { //menampilkan detail senjata, hanya menampilkan salah satu jika ada senjata yang sama karena menggunakana binary search
+                cout << "======================================\n";
+                cout << "Ditemukan hasil\n";
+                cout << "Nama: "<<kar[hasil].nama << endl;
+                cout << "HP: " << kar[hasil].hp << endl;
+                cout << "Senjata: " << kar[hasil].weapon << endl;
+                cout << "ATK: " <<kar[hasil].atk << endl; 
+                cout << "======================================\n";
+            }
+            break;
+
+            case 4:
+            find=false;
+            cout << "Input jumlah ATK yang ingin dicari: ";
+            cin >> atk;
+            for (int i=0;i<n;i++){//Linier search
+                if(kar[i].atk==atk){//menampilkan semua karakter yang memiliki jumlah atk yang dicari
+                    cout << "======================================\n";
+                    cout << "Ditemukan hasil:\n";
+                    cout << "Nama: "<<kar[i].nama << endl;
+                    cout << "HP: " << kar[i].hp << endl;
+                    cout << "Senjata: " << kar[i].weapon << endl;
+                    cout << "ATK: " <<kar[i].atk << endl;
+                    cout << "======================================\n";
+                    find=true;
+                } 
+            }
+            if(!find){
+                cout << "Data Tidak Ditemukan\n";
+            }
+            break;
+
+            case 5://data yabg ditampilkan tergantung aksi sebelumnya(tergantung sortname/sortweapon)
+            for (int i=0;i<n;i++){
+                cout << "======================================\n";
+                cout << "Nama: "<<kar[i].nama << endl;
+                cout << "HP: " << kar[i].hp << endl;
+                cout << "Senjata: " << kar[i].weapon << endl;
+                cout << "ATK: " <<kar[i].atk << endl;
+                cout << "======================================\n";
+            }
+            break;
+
+            default://jika input salah
+            cout << "Input salah\n";
+            break;
+        }
+        cout << "Lanjut Mencari Data?(iya/tidak)";//input untuk melakukan perulangan atau tidak(case sensitive(iya))
+        cin >> konfirmasi;
+    }while(konfirmasi=="iya");
+    return 0;
+}
